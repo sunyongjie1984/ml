@@ -15,7 +15,10 @@ from numpy import *
 import operator
 from os import listdir
 
+import pdb
+
 def classify0(inX, dataSet, labels, k):
+    pdb.set_trace( );
     dataSetSize = dataSet.shape[0]
     diffMat = tile(inX, (dataSetSize,1)) - dataSet
     sqDiffMat = diffMat**2
@@ -30,6 +33,7 @@ def classify0(inX, dataSet, labels, k):
     return sortedClassCount[0][0]
 
 def createDataSet():
+    pdb.set_trace( );
     group = array([[1.0,1.1],[1.0,1.0],[0,0],[0,0.1]])
     labels = ['A','A','B','B']
     return group, labels
