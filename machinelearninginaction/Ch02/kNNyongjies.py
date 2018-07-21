@@ -13,7 +13,7 @@ def createDataSet():
     return group, labels;
 
 # knn algorithm
-def classify0( inX, dataSet, labels, k) :
+def classify0( inX, dataSet, labels, k ):
     pdb.set_trace( );
     dataSetSize = dataSet.shape[ 0 ];
     diffMat = tile( inX, ( dataSetSize, 1 ) ) - dataSet;
