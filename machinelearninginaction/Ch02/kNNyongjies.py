@@ -34,7 +34,7 @@ def classify0( inX, dataSet, labels, k ):
     sortedDistIndicies = distances.argsort( );
     # // 空字典{ }
     classCount = { };
-    for i in range( k ) :
+    for i in range( k ):
         # i: 0, 1, 2
         # voteIlabel: 'B', 'B', 'A'
         voteIlabel = labels[ sortedDistIndicies[ i ] ];
@@ -50,3 +50,33 @@ def classify0( inX, dataSet, labels, k ):
             key = operator.itemgetter( 1 ), reverse = True );
     # sortedClassCount[ 0 ][ 0 ]: 'B'
     return sortedClassCount[ 0 ][ 0 ];
+
+#将特征输入到分类器之前，必须将待处理数据的格式改变为分类器可以接受的格式。
+#本函数用来处理输入格式的问题。输入为文件名字符串，输出为训练样本和类标签向量。
+def file2matrix( filename ):
+    fr = open( filename );
+    arrayOLines = fr.readlines( );
+    numberOfLines = len( arrayOLines );        # get the number of lines in the file
+    returnMat = zeros( ( numberOfLines, 3 ) ); # prepare matrix to return
+    classLabelVector = [ ];                    # prepare labels return
+    index = 0;
+    for line in arrayOLines:
+        line = line.strip( );
+        listFromLine = line.split( '\t' );
+        returnMat[ index, : ] = listFromLine[ 0 : 3 ];
+        #classLabelVector.append( int( listFromLine[ -1 ] ) );
+        classLabelVector.append( int( listFromLine[ -1 ] ) )
+        index += 1;
+    return returnMat, classLabelVector;
+
+def autoNorm( dataSet ):
+    minVals = dataSet.min( 0 ); # the min value of the 0 column
+    maxVals = dataSet.max( 0 );
+    ranges = maxVals - minVals;
+    normDataSet = zeros( shape( dataSet ) );
+    m = dataSet.shape[ 0 ];
+    normDataSet = dataSet - tile( minVals, ( m, 1 ) );
+    normDataSet = normDataSet / tile( ranges, ( m, 1 ) );
+    return normDataSet, ranges, minVals;
+
+
