@@ -7,7 +7,7 @@ import pdb
 
 # create dataset and labels
 def createDataSet():
-    pdb.set_trace( );
+    #pdb.set_trace( );
     group = array( [ [ 1.0, 1.1 ], [ 1.0, 1.0 ], [ 0, 0 ], [ 0, 0.1 ] ] );
     labels = [ 'A', 'A', 'B', 'B' ];
     return group, labels;
@@ -18,7 +18,7 @@ def createDataSet():
 # labels: [ 'A', 'A', 'B', 'B' ]
 # k: 3
 def classify0( inX, dataSet, labels, k ):
-    pdb.set_trace( );
+    #pdb.set_trace( );
     # data set size: 4
     dataSetSize = dataSet.shape[ 0 ];
     # array( [ [ -1, -1.1 ], [ -1, -1 ], [ 0, 0 ], [ 0, -0.1 ] ] )
@@ -79,4 +79,33 @@ def autoNorm( dataSet ):
     normDataSet = normDataSet / tile( ranges, ( m, 1 ) );
     return normDataSet, ranges, minVals;
 
+def datingClassTest( ):
+    hoRatio = 0.1;
+    datingDataMat, datingLabels = file2matrix( 'datingTestSet2.txt' );
+    normMat, ranges, minVals = autoNorm( datingDataMat );
+    m = normMat.shape[ 0 ];
+    numTestVecs = int( m * hoRatio );
+    errorCount = 0.0;
+    for i in range( numTestVecs ):
+        classifierResult = classify0( normMat[ i, : ], normMat[ numTestVecs : m, : ],\
+                datingLabels[ numTestVecs : m ], 3 );
+        #print "the classifier came back with: %d, the real answer is: %d" % (classifierResult, datingLabels[i])
+        print "the classifier came back with: %d, the real answer is: %d"\
+                % ( classifierResult, datingLabels[ i ] );
+        if ( classifierResult != datingLabels[ i ] ):
+            errorCount += 1.0;
+    print " the total error rate is: %f" % (errorCount / float( numTestVecs) );
 
+def classifyPerson( ):
+    resultList = [ 'not at all', 'in small doses', 'in large doses' ];
+    percentTats = float( raw_input( \
+            "percentage of time spent playing video gamrs?" ) );
+    ffMiles = float( raw_input( " frequent fliter miles earned per year?" ) );
+    iceCream = float( raw_input( "liters of ice cream consumed per year?" ) );
+    datingDataMat, datingLabels = file2matrix( 'datingTestSet2.txt' );
+    normMat, ranges, minVals = autoNorm( datingDataMat );
+    inArr = array( [ ffMiles, percentTats, iceCream ] );
+    classifierResult = classify0( ( inArr - \
+            minVals ) / ranges, normMat, datingLabels, 3);
+    print " You will probably like this person: ", \
+            resultList[ classifierResult - 1 ];
