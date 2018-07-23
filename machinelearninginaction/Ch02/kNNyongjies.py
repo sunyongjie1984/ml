@@ -64,13 +64,12 @@ def file2matrix( filename ):
         line = line.strip( );
         listFromLine = line.split( '\t' );
         returnMat[ index, : ] = listFromLine[ 0 : 3 ];
-        #classLabelVector.append( int( listFromLine[ -1 ] ) );
         classLabelVector.append( int( listFromLine[ -1 ] ) )
         index += 1;
     return returnMat, classLabelVector;
 
 def autoNorm( dataSet ):
-    minVals = dataSet.min( 0 ); # the min value of the 0 column
+    minVals = dataSet.min( 0 ); # the min value of the column 0
     maxVals = dataSet.max( 0 );
     ranges = maxVals - minVals;
     normDataSet = zeros( shape( dataSet ) );
@@ -89,7 +88,6 @@ def datingClassTest( ):
     for i in range( numTestVecs ):
         classifierResult = classify0( normMat[ i, : ], normMat[ numTestVecs : m, : ],\
                 datingLabels[ numTestVecs : m ], 3 );
-        #print "the classifier came back with: %d, the real answer is: %d" % (classifierResult, datingLabels[i])
         print "the classifier came back with: %d, the real answer is: %d"\
                 % ( classifierResult, datingLabels[ i ] );
         if ( classifierResult != datingLabels[ i ] ):
