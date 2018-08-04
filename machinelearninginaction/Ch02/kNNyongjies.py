@@ -61,16 +61,16 @@ def file2matrix( filename ):
     classLabelVector = [ ];                    # prepare labels return
     index = 0;
     for line in arrayOLines:
-        line = line.strip( );
-        listFromLine = line.split( '\t' );
-        returnMat[ index, : ] = listFromLine[ 0 : 3 ];
-        classLabelVector.append( int( listFromLine[ -1 ] ) )
+        line = line.strip( ); # 去掉回车符
+        listFromLine = line.split( '\t' ); # 使用tab分割元素列表
+        returnMat[ index, : ] = listFromLine[ 0 : 3 ]; #前三元素放入特征矩阵中
+        classLabelVector.append( int( listFromLine[ -1 ] ) ) #利用负索引，将最后一列存储到向量classLabelVector
         index += 1;
     return returnMat, classLabelVector;
 
 def autoNorm( dataSet ):
-    minVals = dataSet.min( 0 ); # the min value of the column 0
-    maxVals = dataSet.max( 0 );
+    minVals = dataSet.min( 0 ); # array( [ 0. , 0., 0.001156 ] )
+    maxVals = dataSet.max( 0 ); # array( [ 9.12730000e+04, 2.09193490e+01, 1.69551700e+00 ] )
     ranges = maxVals - minVals;
     normDataSet = zeros( shape( dataSet ) );
     m = dataSet.shape[ 0 ];
@@ -95,6 +95,7 @@ def datingClassTest( ):
     print " the total error rate is: %f" % (errorCount / float( numTestVecs) );
 
 def classifyPerson( ):
+    pdb.set_trace( );
     resultList = [ 'not at all', 'in small doses', 'in large doses' ];
     percentTats = float( raw_input( \
             "percentage of time spent playing video gamrs?" ) );
